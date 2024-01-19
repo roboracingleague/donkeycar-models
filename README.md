@@ -8,9 +8,13 @@
 | 053 | LCR  | 0.35 / 0.65 | 12 | AI Angle |         -        | Shuffle | 72 K | Raw | 0.19021 | 35 | - | - | - | - |
 | 054 | LCR  | 0.35 / 0.65 | 12 | AI Angle | Transfer from 52 | Shuffle | 72 K | Raw | 0.13072 | 21 | - | - | - | - |
 | 055 | LCRS | 0.35 / 0.65 | 12 | AI Angle |         -        | Shuffle | 72 K | Raw | 0.13679 | 26 | 0.9063 | 0.9885 | 0.9024 | 0.9918 |
-| 056 | LCRS | 0.35 / 0.65 | 12 | AI Angle | Transfer from 52 | Shuffle | 72 K | Raw | 0.11870 | 18 | 0.9255 | 0.9899 | 0.9146 | 0.9943 |
+| 056 | LCRS | 0.35 / 0.65 | 24 | AI Angle | Transfer from 52 | Shuffle | 72 K | Raw | 0.11870 | 18 | 0.9255 | 0.9899 | 0.9146 | 0.9943 |
+| A001 | LRO | n/a | 24 | Labaled_indexes | - | Shuffle | 17 K | Raw | 0.21497 | 14 | - | - | - | - |
 
 __Model Type__
 
-* LCR : Left Center Right
+* L : Left
+* C : Center
+* R : Right
 * S : Speed
+* O : Obstacle
