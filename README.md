@@ -17,6 +17,7 @@
 | 069 | LCRS | 0.25 / 0.75 | 12 | AI Angle | 20240126 Alpine+Megane+Sandero | Shuffle | 135 K | Raw | 0.10854 | 24 | - | - | - | - | - |
 | 070 | LCRS | 0.25 / 0.75 | 12 | AI Angle | 20240126 Alpine | Shuffle | 83 K | Raw | 0.05773 | 19 | - | - | - | - | - |
 | 071 | LCRS | 0.25 / 0.75 | 12 | AI Angle | 20240126 Megane | Shuffle | 90 K | Raw | 0.05369 | 17 | - | - | - | - | - |
+
 | A001 | LRO | n/a | 24 | Labeled_indexes | - | Shuffle | 17 K | Raw | 0.21497 | 14 | - | - | - | - | 1.2 |
 | A020 | LRO | n/a | 12 | Labeled_indexes | - | Shuffle | 17 K | Raw | 0.09710 | 16 | - | - | - | - | 1.5 |
 | A021 | LRO | n/a | 12 | Labeled_indexes | - | Shuffle | 17 K | Raw | 0.10870 | 15 | - | - | - | - | 1.2 |
