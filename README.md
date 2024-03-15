@@ -46,10 +46,10 @@ __Model Type__
 
 | Course         | Model | Behavior | Min Speed | Max Speed | Flanger Low | Flanger High |
 | :-             |    -: |       -: |        -: |        -: |          -: |           -: |
-| Sprint AI      |    69 |     A022 |      0.19 |      0.23 |  -0.2, 0.25 |    -0.3, 0.3 |
-| Sprint Copilot |    69 |     A022 |           |           |             |              |
-| Slalom AI      |    69 |     A022 |      0.17 |      0.17 |  -0.2, 0.25 |    -0.3, 0.3 |
-| Slalom Copilot |    69 |     A022 |           |           |             |              |
+| Sprint AI      |    67 |     A022 |      0.19 |      0.23 |  -0.2, 0.25 |    -0.3, 0.3 |
+| Sprint Copilot |    67 |     A022 |           |           |             |              |
+| Slalom AI      |    67 |     A022 |      0.17 |      0.17 |  -0.2, 0.25 |    -0.3, 0.3 |
+| Slalom Copilot |    67 |     A022 |           |           |             |              |
 
 ### Alpine
 
