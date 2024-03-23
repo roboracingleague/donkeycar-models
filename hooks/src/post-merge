@@ -1,0 +1,16 @@
+#!/bin/bash
+
+echo Running post-merge hook in $PWD
+
+ONNX_DIR="onnx"
+
+files="$(git diff-tree -r --name-only --no-commit-id HEAD@{1} HEAD $ONNX_DIR)"
+
+for file in $files
+do
+  if [[ $file == *.onnx ]]
+  then
+    echo "$file is an onnx file"
+  fi
+done
+
