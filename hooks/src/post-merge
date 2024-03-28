@@ -1,16 +1,101 @@
 #!/bin/bash
+# This hook's primary intent is to run a conversion script for all onnx file on git pull
+
+ONNX_FILES="onnx/*.onnx"
+BUILD_ENGINE="~/donkeycar/donkeycar/tools/tensorrt/build_save_trt_engine.py"
+
+# ANSI Escape codes
+BCYAN='\033[1;36m' # Bold Cyan
+YELLOW='\033[1;33m' # Yellow
+BGREEN='\033[1;32m' # Bold Green
+NC='\033[0m' # No Color
+
+convert_behavior_to_trt () {
+  local trt_file=$(get_trt_filename $1)
+
+  # Build up array of arguments...
+  local args=()
+  args+=( '--onnx' "$1" )
+  args+=( '--savedtrt' "$trt_file" )
+  if [[ $ROBOCARS_PLATFORM != "orin" ]]; then args+=( '--limit-workspace' ); fi
+
+  # ... and pass it to command
+  mkdir -p "$(dirname "$trt_file")" && touch "$trt_file"
+  #echo python $BUILD_ENGINE "${args[@]}"
+}
+
+convert_detector_to_trt () {
+  echo "not implemented yet"
+}
+
+convert_to_trt () {
+  if [[ $1 == onnx/behavior/*.onnx ]]
+  then
+    convert_behavior_to_trt $1
+  elif [[ $1 == onnx/detector/*.onnx ]]
+  then
+    convert_detector_to_trt $1
+  fi
+}
+
+get_trt_filename () {
+  echo $1 | sed "s#onnx#trt#g"
+}
+
+process_added_file () {
+  local trt_file=$(get_trt_filename $1)
+
+  # TRT file is already there
+  if [[ -e $trt_file ]]
+  then
+    echo -e "${BGREEN}skipping${NC}... $trt_file already exists"
+    return
+  fi
+
+  # Converting ONNX to TRT
+  echo -e "${BGREEN}converting${NC} $1"
+  convert_to_trt $1
+}
+
+process_deleted_file () {
+  local trt_file=$(get_trt_filename $1)
+
+  echo -e "${YELLOW}deleting $trt_file${NC}... $1 deleted on the remote"
+  rm -f $trt_file
+}
+
+process_modified_file () {
+  local trt_file=$(get_trt_filename $1)
+
+  echo -e "${BGREEN}rebuilding $trt_file${NC}... $1 has changed on the remote"
+  rm -f $trt_file
+  convert_to_trt $1
+}
 
 echo Running post-merge hook in $PWD
 
-ONNX_DIR="onnx"
+# Get all changes on onnx files since the last Pull
+changes="$(git diff-tree -r --name-status HEAD@{1} HEAD -- $ONNX_FILES)"
 
-files="$(git diff-tree -r --name-only --no-commit-id HEAD@{1} HEAD $ONNX_DIR)"
+if [[ -z $changes ]]; then echo -e "${BGREEN}No new ONNX${NC}"; exit; fi
 
-for file in $files
+echo -e "Robocar platform is ${BCYAN}$ROBOCARS_PLATFORM${NC}"
+
+while read -r status file
 do
-  if [[ $file == *.onnx ]]
-  then
-    echo "$file is an onnx file"
-  fi
-done
+  case $status in
+    A)
+        process_added_file $file
+        ;;
+    D)
+        process_deleted_file $file
+        ;;
+    M)
+        process_modified_file $file
+        ;;
+    *)
+        echo "Unknown status: $file" >&2
+        ;;
+  esac
+done <<< $changes
 
