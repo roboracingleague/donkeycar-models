@@ -1,1 +1,0 @@
-# This folder should contain models for jetpack 5.1
