@@ -11,35 +11,25 @@ YELLOW='\033[1;33m' # Yellow
 BGREEN='\033[1;32m' # Bold Green
 NC='\033[0m' # No Color
 
-convert_behavior_to_trt () {
-  local trt_file=$(get_trt_filename $1)
+convert_using_engine () {
+  local trt_file=$(get_trt_filename $2)
 
   # Build up array of arguments...
   local args=()
-  args+=( '--onnx' "$1" )
+  args+=( '--onnx' "$2" )
   args+=( '--savedtrt' "$trt_file" )
   if [[ $ROBOCARS_PLATFORM != "orin" ]]; then args+=( '--limit-workspace' ); fi
 
   # mkdir -p "$(dirname "$trt_file")" && touch "$trt_file" # for local tests only
-  python $BEHAVIOR_BUILD_ENGINE "${args[@]}"
-}
-
-convert_detector_to_trt () {
-  local trt_file=$(get_trt_filename $1)
-
-  # Build up array of arguments...
-  local args=()
-  args+=( '--onnx' "$1" )
-  args+=( '--savedtrt' "$trt_file" )
-
-  # mkdir -p "$(dirname "$trt_file")" && touch "$trt_file" # for local tests only
-  python $DETECTOR_BUILD_ENGINE "${args[@]}"
+  python $1 "${args[@]}"
 }
 
 convert_to_trt () {
   if [[ $1 =~ (detector|behavior).*.onnx ]]
   then
-    convert_${BASH_REMATCH[1]}_to_trt $1
+    build_engine_name=${BASH_REMATCH[1]^^}_BUILD_ENGINE
+    build_engine=${!build_engine_name}
+    convert_using_engine $build_engine $1
   fi
 }
 
