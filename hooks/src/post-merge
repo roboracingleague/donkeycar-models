@@ -2,7 +2,8 @@
 # This hook's primary intent is to run a conversion script for all onnx file on git pull
 
 ONNX_FILES="onnx/*.onnx"
-BUILD_ENGINE="~/donkeycar/donkeycar/tools/tensorrt/build_save_trt_engine.py"
+BEHAVIOR_BUILD_ENGINE="${DONKEYCAR_DIR}/donkeycar/tools/tensorrt/build_save_trt_behavior_engine.py"
+DETECTOR_BUILD_ENGINE="${DONKEYCAR_DIR}/donkeycar/tools/tensorrt/build_save_trt_engine.py"
 
 # ANSI Escape codes
 BCYAN='\033[1;36m' # Bold Cyan
@@ -19,22 +20,26 @@ convert_behavior_to_trt () {
   args+=( '--savedtrt' "$trt_file" )
   if [[ $ROBOCARS_PLATFORM != "orin" ]]; then args+=( '--limit-workspace' ); fi
 
-  # ... and pass it to command
-  mkdir -p "$(dirname "$trt_file")" && touch "$trt_file"
-  #echo python $BUILD_ENGINE "${args[@]}"
+  # mkdir -p "$(dirname "$trt_file")" && touch "$trt_file" # for local tests only
+  python $BEHAVIOR_BUILD_ENGINE "${args[@]}"
 }
 
 convert_detector_to_trt () {
-  echo "not implemented yet"
+  local trt_file=$(get_trt_filename $1)
+
+  # Build up array of arguments...
+  local args=()
+  args+=( '--onnx' "$1" )
+  args+=( '--savedtrt' "$trt_file" )
+
+  # mkdir -p "$(dirname "$trt_file")" && touch "$trt_file" # for local tests only
+  python $DETECTOR_BUILD_ENGINE "${args[@]}"
 }
 
 convert_to_trt () {
-  if [[ $1 == onnx/behavior/*.onnx ]]
+  if [[ $1 =~ (detector|behavior).*.onnx ]]
   then
-    convert_behavior_to_trt $1
-  elif [[ $1 == onnx/detector/*.onnx ]]
-  then
-    convert_detector_to_trt $1
+    convert_${BASH_REMATCH[1]}_to_trt $1
   fi
 }
 
