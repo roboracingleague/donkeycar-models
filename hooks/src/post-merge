@@ -84,6 +84,8 @@ changes="$(git diff-tree -r --name-status HEAD@{1} HEAD -- $ONNX_FILES)"
 
 if [[ -z $changes ]]; then echo -e "${BGREEN}No new ONNX${NC}"; exit; fi
 
+mkdir -p trt
+
 echo -e "Robocar platform is ${BCYAN}$ROBOCARS_PLATFORM${NC}"
 
 while read -r status file
