@@ -1,6 +1,51 @@
-# Models Reference
+# Readme
 
-## Model Type
+## How to install
+
+This will need the last version of git as we need the `sparse-checkout` git command. Here's how to update :
+
+```bash
+sudo add-apt-repository -y ppa:git-core/ppa
+sudo apt-get update
+sudo apt-get install git -y
+```
+
+Follow those steps to install
+
+```bash
+# clone the repo without getting any files history except root files
+git clone --filter=blob:none --no-checkout --depth 1 --sparse https://github.com/roboracingleague/donkeycar-models
+
+# Get only the 'hooks/' & 'onnx/' folders
+cd donkeycar-models
+git config core.sparsecheckout true
+git sparse-checkout add hooks onnx
+git checkout
+
+# Launch first convertion
+./hooks/src/post-merge init
+
+# install the git hooks
+cd hooks
+./install_hooks.sh
+```
+
+## How to use
+
+Whenever a new onnx is created and should be deployed on the cars, it must be commited and pushed on the remote in the `onnx` folder. The file should be named either `behavior*.onnx` or `detector*.onnx`, depending on the type of model it is.
+
+To retrieve the new model on the car, connect to the car, cd to the models directory, and pull the repository.
+
+```bash
+cd donkeycar-models
+git pull
+```
+
+The pull command will trigger the `post-merge` hook who in turn will convert the new `onnx` file to a `trt` file.
+
+## Models Reference
+
+### Model Type
 
 * L : Left
 * C : Center
@@ -8,7 +53,7 @@
 * S : Speed
 * O : Obstacle
 
-## Model list
+### Model list
 
 | Model | Model Type | Steering Ref. | Kernels | In                     | Out                 | Learning Type                  | Val. Dataset | # Images | img Type | Val. Loss | Epoch | Angle Accuracy | Throttle Accuracy | Val. Angle Accuracy | Val. Throttle Accuracy | Max. dist. | Note                                                                             |
 |------:|------------|:-------------:|--------:|------------------------|---------------------|:-------------------------------|:-------------|---------:|----------|----------:|------:|---------------:|------------------:|--------------------:|-----------------------:|-----------:|--------------------------------------------------------------------------------- |

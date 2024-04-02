@@ -69,8 +69,17 @@ process_modified_file () {
 
 echo Running post-merge hook in $PWD
 
+if [[ $1 == "init" ]]
+then
+  # First commit ever
+  previous_head=$(git rev-list --max-parents=0 HEAD)
+else
+  # Last commit before the pull
+  previous_head="HEAD@{1}"
+fi
+
 # Get all changes on onnx files since the last Pull
-changes="$(git diff-tree -r --name-status HEAD@{1} HEAD -- $ONNX_FILES)"
+changes="$(git diff-tree -r --name-status $previous_head HEAD -- $ONNX_FILES)"
 
 if [[ -z $changes ]]; then echo -e "${BGREEN}No new ONNX${NC}"; exit; fi
 
