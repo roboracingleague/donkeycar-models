@@ -21,6 +21,7 @@ cd donkeycar-models
 git config core.sparsecheckout true
 git sparse-checkout add hooks onnx
 git checkout
+git fetch --unshallow
 
 # Launch first convertion
 ./hooks/src/post-merge init
