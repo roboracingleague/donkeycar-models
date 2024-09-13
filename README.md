@@ -92,3 +92,15 @@ The pull command will trigger the `post-merge` hook who in turn will convert the
 |  A020 | LRO        |      n/a      |      12 | img                    | Obstacle position   | -                              | Shuffle      |     17 K | Raw      |   0.09710 |    16 |              - |                 - |                   - |                      - |        1.5 |                                                                                  |
 |  A021 | LRO        |      n/a      |      12 | img                    | Obstacle position   | -                              | Shuffle      |     17 K | Raw      |   0.10870 |    15 |              - |                 - |                   - |                      - |        1.2 |                                                                                  |
 |  A022 | LRO        |      n/a      |      12 | img                    | Obstacle position   | -                              | Shuffle      |     17 K | Raw      |   0.08259 |    17 |              - |                 - |                   - |                      - |        2.0 |                                                                                  |
+
+### 2024-05-02 Tests Sandero models
+
+max speed 0.25
+
+* behavior-069.trt : REF - keep center at max speed, cannot keep lanes at max speed, some obvious oscilations
+* behavior-093.trt : Little less smooth ? or not that much - keep lanes at max speed
+* behavior-094.trt : keep lanes at max speed
+* behavior-095.trt : Smoother - keep lanes at max speed ; better than 93 & 94 - keep center at 0.28
+* behavior-096.trt : less smooth - globally keep lanes at max speed but out few times
+* behavior-097.trt : NA
+* behavior-098.trt : Little less smooth
